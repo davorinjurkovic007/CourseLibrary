@@ -11,13 +11,13 @@ namespace CourseLibrara.API.ValidationAttributes
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            var course = (CourseForMonipulationDto)validationContext.ObjectInstance;
+            var course = (CourseForCreationDto)validationContext.ObjectInstance;
 
             if(course.Title == course.Description)
             {
                 return new ValidationResult(
                     ErrorMessage,
-                    new[] { nameof(CourseForMonipulationDto) });
+                    new[] { nameof(CourseForCreationDto) });
             }
 
             return ValidationResult.Success;
