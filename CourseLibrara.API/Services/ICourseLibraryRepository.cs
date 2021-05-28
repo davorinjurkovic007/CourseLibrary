@@ -1,4 +1,5 @@
 ﻿using CourseLibrara.API.Entities;
+using CourseLibrara.API.Helpers;
 using CourseLibrara.API.ResourceParameters;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ namespace CourseLibrara.API.Services
         void UpdateCourse(Course course);
         void DeleteCourse(Course course);
         IEnumerable<Author> GetAuthors();
-        IEnumerable<Author> GetAuthors(AuthorsResourceParameters authorsResourceParameters);
+        PagedList<Author> GetAuthors(AuthorsResourceParameters authorsResourceParameters);
         Author GetAuthor(Guid authorId);
         IEnumerable<Author> GetAuthors(IEnumerable<Guid> authorIds);
         void AddAuthor(Author author);
