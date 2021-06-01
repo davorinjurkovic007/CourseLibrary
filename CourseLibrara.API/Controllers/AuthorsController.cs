@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CourseLibrara.API.Entities;
 using CourseLibrara.API.Helpers;
 using CourseLibrara.API.Models;
 using CourseLibrara.API.ResourceParameters;
@@ -16,17 +17,24 @@ namespace CourseLibrara.API.Controllers
     {
         private readonly ICourseLibraryRepository courseLibraryRepository;
         private readonly IMapper mapper;
+        private readonly IPropertyMappingService propertyMappingService;
 
-        public AuthorsController(ICourseLibraryRepository courseLibraryRepository, IMapper mapper)
+        public AuthorsController(ICourseLibraryRepository courseLibraryRepository, IMapper mapper, IPropertyMappingService propertyMappingService)
         {
             this.courseLibraryRepository = courseLibraryRepository ?? throw new ArgumentNullException(nameof(courseLibraryRepository));
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            this.propertyMappingService = propertyMappingService ?? throw new ArgumentNullException(nameof(propertyMappingService));
         }
 
         [HttpGet(Name = "GetAuthors")]
         [HttpHead]
         public ActionResult<IEnumerable<AuthorDto>> GetAuthors([FromQuery] AuthorsResourceParameters authorsResourceParameters)
         {
+           if(!propertyMappingService.ValidMappingExistsFor<AuthorDto, Author>(authorsResourceParameters.OrderBy))
+           {
+                return BadRequest();
+           }
+            
             var authorsFromRepo = courseLibraryRepository.GetAuthors(authorsResourceParameters);
 
             var previousPageLink = authorsFromRepo.HasPrevious ?
