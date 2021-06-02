@@ -29,6 +29,8 @@ namespace CourseLibrara.API.Helpers
             {
                 // all public properties should be in the ExpandoObject
                 var propertyInfos = typeof(TSource).GetProperties(BindingFlags.Public | BindingFlags.Instance);
+
+                propertyInfoList.AddRange(propertyInfos);
             }
             else
             {

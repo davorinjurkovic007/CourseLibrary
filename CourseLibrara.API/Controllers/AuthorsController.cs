@@ -18,12 +18,18 @@ namespace CourseLibrara.API.Controllers
         private readonly ICourseLibraryRepository courseLibraryRepository;
         private readonly IMapper mapper;
         private readonly IPropertyMappingService propertyMappingService;
+        private readonly IPropertyCheckerService propertyCheckerService;
 
-        public AuthorsController(ICourseLibraryRepository courseLibraryRepository, IMapper mapper, IPropertyMappingService propertyMappingService)
+        public AuthorsController(
+                                ICourseLibraryRepository courseLibraryRepository, 
+                                IMapper mapper, 
+                                IPropertyMappingService propertyMappingService,
+                                IPropertyCheckerService propertyCheckerService)
         {
             this.courseLibraryRepository = courseLibraryRepository ?? throw new ArgumentNullException(nameof(courseLibraryRepository));
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             this.propertyMappingService = propertyMappingService ?? throw new ArgumentNullException(nameof(propertyMappingService));
+            this.propertyCheckerService = propertyCheckerService ?? throw new ArgumentNullException(nameof(propertyCheckerService));
         }
 
         [HttpGet(Name = "GetAuthors")]
@@ -31,6 +37,11 @@ namespace CourseLibrara.API.Controllers
         public IActionResult GetAuthors([FromQuery] AuthorsResourceParameters authorsResourceParameters)
         {
            if(!propertyMappingService.ValidMappingExistsFor<AuthorDto, Author>(authorsResourceParameters.OrderBy))
+           {
+                return BadRequest();
+           }
+
+           if(!propertyCheckerService.TypeHasProperties<AuthorDto>(authorsResourceParameters.Fields))
            {
                 return BadRequest();
            }
@@ -61,8 +72,13 @@ namespace CourseLibrara.API.Controllers
         }
 
         [HttpGet("{authorId:guid}", Name = "GetAuthor")]
-        public IActionResult GetAuthor(Guid authorId)
+        public IActionResult GetAuthor(Guid authorId, string fields)
         {
+            if(!propertyCheckerService.TypeHasProperties<AuthorDto>(fields))
+            {
+                return BadRequest();
+            }
+
             var authorFromRepo = courseLibraryRepository.GetAuthor(authorId);
 
             if(authorFromRepo == null)
@@ -70,7 +86,7 @@ namespace CourseLibrara.API.Controllers
                 return NotFound();
             }
 
-            return Ok(mapper.Map<AuthorDto>(authorFromRepo));
+            return Ok(mapper.Map<AuthorDto>(authorFromRepo).ShapeData(fields));
         }
 
         [HttpPost]

@@ -81,6 +81,9 @@ namespace CourseLibrara.API
             // Transient is a lifetime advised by the APS.NET Core team for lightweight stateless services
             services.AddTransient<IPropertyMappingService, PropertyMappingService>();
 
+            // register PropertyCheckerService
+            services.AddTransient<IPropertyCheckerService, PropertyCheckerService>();
+
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddScoped<ICourseLibraryRepository, CourseLibraryRepository>();
