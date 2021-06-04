@@ -20,6 +20,8 @@ namespace CourseLibrara.API.Entities
         [Required]
         public DateTimeOffset DateOfBirth { get; set; }
 
+        public DateTimeOffset? DateOfDeath { get; set; }
+
         [Required]
         public string MainCategory { get; set; }
 
