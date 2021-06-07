@@ -16,6 +16,7 @@ namespace CourseLibrara.API.Controllers
 {
     [ApiController]
     [Route("api/authors/{authorId}/courses")]
+    [ResponseCache(CacheProfileName = "240SecondsCacheProfile")]
     public class CourseController : ControllerBase
     {
         private readonly ICourseLibraryRepository courseLibraryRepository;
@@ -40,6 +41,7 @@ namespace CourseLibrara.API.Controllers
         }
 
         [HttpGet("{courseId}", Name = "GetCourseForAuthor")]
+        [ResponseCache(Duration = 120)]
         public ActionResult<CourseDto> GetCourseForAuthor(Guid authorId, Guid courseId)
         {
             if(!courseLibraryRepository.AuthorExists(authorId))
