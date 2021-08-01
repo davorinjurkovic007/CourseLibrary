@@ -67,7 +67,7 @@ namespace CourseLibrara.API.Controllers
         [HttpPost(Name = "CreateCoursesForAuthor")]
         public ActionResult<CourseDto> CreateCoursesForAuthor(Guid authorId, CourseForCreationDto course)
         {
-            if(courseLibraryRepository.AuthorExists(authorId))
+            if(!courseLibraryRepository.AuthorExists(authorId))
             {
                 return NotFound();
             }

@@ -42,6 +42,9 @@ namespace CourseLibrara.API
 
             services.AddControllers(setupAction =>
             {
+                // If this set to false, the API will return response in default supported format, if an unsupportive media
+                // type is requested.
+                // By default, it is false. 
                 setupAction.ReturnHttpNotAcceptable = true;
                 setupAction.CacheProfiles.Add("240SecondsCacheProfile",
                                                 new CacheProfile()
@@ -53,13 +56,17 @@ namespace CourseLibrara.API
             {
                 setupAction.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
             })
+            // The preferred way of adding input and output formatters for XML
             .AddXmlDataContractSerializerFormatters()
+            // Configure how the API controller Attribute should behave
             .ConfigureApiBehaviorOptions( setupAction =>
             {
+                // This is what will be execued when the model state is invalid
                 setupAction.InvalidModelStateResponseFactory = context =>
                 {
                     // create problem detail object
                     var problemDetailsFactory = context.HttpContext.RequestServices.GetRequiredService<ProblemDetailsFactory>();
+                    // This will thus translate the validation errors from the ModelState to the RFC format
                     var problemDetails = problemDetailsFactory.CreateValidationProblemDetails(context.HttpContext, context.ModelState);
 
                     // add additional info not added by defalult
@@ -67,6 +74,7 @@ namespace CourseLibrara.API
                     problemDetails.Instance = context.HttpContext.Request.Path;
 
                     // find out which status code to use
+                    // By default, all is returned as a 400 Bad Request
                     var actionExecutingContext = context as Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext;
 
                     // if there are modelstate errors & all arguments were correctly
@@ -137,6 +145,7 @@ namespace CourseLibrara.API
                     {
                         context.Response.StatusCode = 500;
                         await context.Response.WriteAsync("An unexpected fault happened! Try again later.");
+                        // This is also where you typically want to log this fault
                     });
                 });
             }
