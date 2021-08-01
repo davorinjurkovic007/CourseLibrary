@@ -10,18 +10,22 @@ namespace CourseLibrara.API.ValidationAttributes
     /// <summary>
     /// NOTE: The problem is this request: POST Author with Courses
     /// This is where is happen error. 
+    /// This is just for demonstration to use with this requests:
+    /// POST Course for Author (null values)
+    /// POST Course for Author (title == description)
+    /// POST Course for Author (long title == long description)
     /// </summary>
     public class CourseTitleMustBeDifferentFromDescriptionAttribute : ValidationAttribute
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            var course = (CourseForCreationDto)validationContext.ObjectInstance;
+            var course = (CourseForMonipulationDto)validationContext.ObjectInstance;
 
             if (course.Title == course.Description)
             {
                 return new ValidationResult(
                     ErrorMessage,
-                    new[] { nameof(CourseForCreationDto) });
+                    new[] { nameof(CourseForMonipulationDto) });
             }
 
             return ValidationResult.Success;

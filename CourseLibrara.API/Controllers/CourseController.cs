@@ -150,7 +150,7 @@ namespace CourseLibrara.API.Controllers
             }
 
             var courseToPathc = mapper.Map<CourseForUpdateDto>(courseForAuthorFromRepo);
-
+            // add validation
             pathcDocument.ApplyTo(courseToPathc, ModelState);
 
             if(!TryValidateModel(courseToPathc))

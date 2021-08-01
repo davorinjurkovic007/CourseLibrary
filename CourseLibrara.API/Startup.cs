@@ -52,6 +52,8 @@ namespace CourseLibrara.API
                                                     Duration = 240
                                                 });
             })
+            // The default formatter
+            // The default formatter is simply the one that was added first.
             .AddNewtonsoftJson(setupAction =>
             {
                 setupAction.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
