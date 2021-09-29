@@ -122,6 +122,9 @@ namespace CourseLibrara.API
             // register PropertyCheckerService
             services.AddTransient<IPropertyCheckerService, PropertyCheckerService>();
 
+            // This method allows us to input a set of assemblies.
+            // It's these assemblies that will automatically get scanned for profiles tha contain mapping configurations.
+            // By calling into AppDomain.CurrentDomain.GetAssemblies(), we are loading profiles from all assemblies in the current domain.
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddScoped<ICourseLibraryRepository, CourseLibraryRepository>();
