@@ -83,6 +83,10 @@ namespace CourseLibrara.API.Controllers
         }
 
         // Any type not in this ilst will return a 406 not acceptable
+        // [FromHeader(Name = "Accept")] string mediaType
+        //  - This attribute tells the framework that this parameter should be bound using the request header
+        //  - We pass in the name of the header, that's Accept, and we give the parameter a name, mediaType
+        //  - The first thing we want to do is check if a valid mediaType was inputted.
         [Produces("application/json",
             "application/vnd.marvin.hateoas+json",
             "application/vnd.marvin.author.full+json",
@@ -92,6 +96,9 @@ namespace CourseLibrara.API.Controllers
         [HttpGet("{authorId:guid}", Name = "GetAuthor")]
         public IActionResult GetAuthor(Guid authorId, string fields, [FromHeader(Name = "Accept")] string mediaType)
         {
+            // The first thing we want to do is check if a valid mediaType was inputted. 
+            // Mind you, an accept header can be comprised of different media types. So if you want to support that, 
+            // you will have to use TryParseList instead of TryParse.
             if(!MediaTypeHeaderValue.TryParse(mediaType, out MediaTypeHeaderValue parsedMediaType))
             {
                 return BadRequest();
