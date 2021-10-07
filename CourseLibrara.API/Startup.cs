@@ -105,6 +105,8 @@ namespace CourseLibrara.API
                 };
             });
 
+            // By calling in to Configure on the ServiceCollection and passing through MvcOptions as the type, we can configure them again. 
+            // We can configure options which we usuali configure in AddControllers, but Json and XML was not loadet yet, so we do it here. 
             services.Configure<MvcOptions>(config =>
             {
                 var newtonsoftJsonOutputFormatter = config.OutputFormatters.OfType<NewtonsoftJsonOutputFormatter>()?.FirstOrDefault();

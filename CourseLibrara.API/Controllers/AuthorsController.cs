@@ -87,6 +87,12 @@ namespace CourseLibrara.API.Controllers
         //  - This attribute tells the framework that this parameter should be bound using the request header
         //  - We pass in the name of the header, that's Accept, and we give the parameter a name, mediaType
         //  - The first thing we want to do is check if a valid mediaType was inputted.
+        // --------------------------------------------------------------------------------------------------------
+        // We applied a Produces attribute to our GetAuthor action, and we passed through all the types allowed for this action.
+        // Be careful with this, though. This is very restrictive. Any type not in this list will return a 406 not acceptable, 
+        // but depending on how strict you want to be, that's exactly what we want.
+        // --   A quick tip, to avoid duplication you could also apply to produce this attribute at controller level or even globally.
+        //      It's just a filter so it can be added to the global filter collection, if needed. 
         [Produces("application/json",
             "application/vnd.marvin.hateoas+json",
             "application/vnd.marvin.author.full+json",
@@ -153,6 +159,11 @@ namespace CourseLibrara.API.Controllers
             return Ok(friendlyResourceToReturn);
         }
 
+        /// <summary>
+        /// The more specific action should be evaluated first
+        /// </summary>
+        /// <param name="author"></param>
+        /// <returns></returns>
         [HttpPost(Name = "CreateAuthorWithDateOfDeath")]
         [RequestHeaderMatchesMediaType("Content-Type", "application/vnd.marvin.authorforcreationwithdateofdeath+json")]
         [Consumes("application/vnd.marvin.authorforcreationwithdateofdeath+json")]
