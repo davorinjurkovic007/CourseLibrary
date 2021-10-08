@@ -38,6 +38,7 @@ namespace CourseLibrara.API
                 validationModelOptions.MustRevalidate = true;
             });
 
+            // This ensures that the necessary services are registered on the container.
             services.AddResponseCaching();
 
             services.AddControllers(setupAction =>
@@ -46,6 +47,8 @@ namespace CourseLibrara.API
                 // type is requested.
                 // By default, it is false. 
                 setupAction.ReturnHttpNotAcceptable = true;
+                // By calling Add on it, we can add a new one.
+                // Cache profiles is actually a dictionary, 
                 setupAction.CacheProfiles.Add("240SecondsCacheProfile",
                                                 new CacheProfile()
                                                 {
