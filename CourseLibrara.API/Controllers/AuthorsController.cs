@@ -93,6 +93,13 @@ namespace CourseLibrara.API.Controllers
         // but depending on how strict you want to be, that's exactly what we want.
         // --   A quick tip, to avoid duplication you could also apply to produce this attribute at controller level or even globally.
         //      It's just a filter so it can be added to the global filter collection, if needed. 
+        /// <summary>
+        /// Get an author by his/her id
+        /// </summary>
+        /// <param name="authorId">The id of the author you want to get</param>
+        /// <param name="fields">Fields to pass</param>
+        /// <param name="mediaType">Which media type to use</param>
+        /// <returns> An author id, name, age and main category fields</returns>
         [Produces("application/json",
             "application/vnd.marvin.hateoas+json",
             "application/vnd.marvin.author.full+json",
