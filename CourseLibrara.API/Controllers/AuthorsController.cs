@@ -5,6 +5,7 @@ using CourseLibrara.API.Helpers;
 using CourseLibrara.API.Models;
 using CourseLibrara.API.ResourceParameters;
 using CourseLibrara.API.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
 using System;
@@ -35,6 +36,9 @@ namespace CourseLibrara.API.Controllers
             this.propertyCheckerService = propertyCheckerService ?? throw new ArgumentNullException(nameof(propertyCheckerService));
         }
 
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [HttpGet(Name = "GetAuthors")]
         [HttpHead]
         public IActionResult GetAuthors([FromQuery] AuthorsResourceParameters authorsResourceParameters)

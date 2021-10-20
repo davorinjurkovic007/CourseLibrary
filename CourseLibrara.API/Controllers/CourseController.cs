@@ -2,6 +2,7 @@
 using CourseLibrara.API.Models;
 using CourseLibrara.API.Services;
 using Marvin.Cache.Headers;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
@@ -20,6 +21,9 @@ namespace CourseLibrara.API.Controllers
     //[ResponseCache(CacheProfileName = "240SecondsCacheProfile")]
     [HttpCacheExpiration(CacheLocation = CacheLocation.Public)]
     [HttpCacheValidation(MustRevalidate = true)]
+    //[ProducesResponseType(StatusCodes.Status400BadRequest)]
+    //[ProducesResponseType(StatusCodes.Status406NotAcceptable)]
+    //[ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public class CourseController : ControllerBase
     {
         private readonly ICourseLibraryRepository courseLibraryRepository;
@@ -31,6 +35,14 @@ namespace CourseLibrara.API.Controllers
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
+        /// <summary>
+        /// Get all courses for given authorId
+        /// </summary>
+        /// <param name="authorId">The id of the author</param>
+        /// <returns>All courses for given author</returns>
+        /// <response code="200">Returns all authors courses</response>
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CourseDto))]
         [HttpGet(Name = "GetCoursesForAuthor")]
         public ActionResult<IEnumerable<CourseDto>> GetCoursesForAuthor(Guid authorId)
         {
@@ -47,6 +59,8 @@ namespace CourseLibrara.API.Controllers
         //[ResponseCache(Duration = 120)]
         [HttpCacheExpiration(CacheLocation = CacheLocation.Public, MaxAge = 1000)]
         [HttpCacheValidation(MustRevalidate = false)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<CourseDto> GetCourseForAuthor(Guid authorId, Guid courseId)
         {
             if(!courseLibraryRepository.AuthorExists(authorId))

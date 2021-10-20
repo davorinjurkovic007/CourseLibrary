@@ -45,6 +45,14 @@ namespace CourseLibrara.API
 
             services.AddControllers(setupAction =>
             {
+                // Filters in this collection are applied to all controllers in our code base.
+                setupAction.Filters.Add(
+                    new ProducesResponseTypeAttribute(StatusCodes.Status400BadRequest));
+                setupAction.Filters.Add(
+                    new ProducesResponseTypeAttribute(StatusCodes.Status406NotAcceptable));
+                setupAction.Filters.Add(
+                    new ProducesResponseTypeAttribute(StatusCodes.Status500InternalServerError));
+
                 // If this set to false, the API will return response in default supported format, if an unsupportive media
                 // type is requested.
                 // By default, it is false. 
