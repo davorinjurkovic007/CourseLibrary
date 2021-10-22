@@ -240,6 +240,24 @@ namespace CourseLibrara.API
                     "Library API");
                 // By setting the route prifix to an empty string, the documentation will be available at the root
                 setupAction.RoutePrefix = "";
+
+                // This sets the default depth, the model, in the example part of the UI as expanded to. Two should fully expand it.
+                setupAction.DefaultModelExpandDepth(2);
+                // DefaultModelRendering controls what we see in the example part of the UI, the model or the example. Default is Example
+                setupAction.DefaultModelRendering(Swashbuckle.AspNetCore.SwaggerUI.ModelRendering.Model);
+                // This controls the default expansion settings for the operations and tags. By default, it's a list.
+                setupAction.DocExpansion(Swashbuckle.AspNetCore.SwaggerUI.DocExpansion.None);
+
+                // Deep linking can be enabled by setting EnableDeepLinking to true on the setupAction.
+                // When we enable that, a user can provide a URI fragment at runtime.
+                // If such a fragment is provided, SwaggerUI will automatically expand and scroll to the tag or operatio from the fragment.
+                // The fragment format is either #/tagname to trigger the focus of a specific tag or #/tagName/operationId to trigger the focus for
+                // a specific operation within a tag.
+                // For example, the frament #/Authors/GetAuthors will automatically expand to GetAuthors operation with Authors as tag, 
+                // and it will scroll to it.
+                setupAction.EnableDeepLinking();
+                setupAction.DisplayOperationId();
+
             });
 
             app.UseRouting();

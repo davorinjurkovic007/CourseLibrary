@@ -149,15 +149,15 @@ namespace CourseLibrara.API.Controllers
         /// <param name="pathcDocument">The set of operations to apply to the course</param>
         /// <returns>An ActionResult of type Course</returns>
         /// <remarks>
-        /// Sample request this request (this request just update description) \
-        /// PATCH /authors/authorid/courses/courseid \
-        /// [ \
-        ///     { \
-        ///         "op": "replace", \
-        ///         "path": "/description", \
-        ///         "value": "new description" \
-        ///     } \
-        /// ] 
+        /// Sample request this request (this request just update **description**)  
+        ///     PATCH /authors/authorid/courses/courseid  
+        ///     [   
+        ///         {   
+        ///             "op": "replace",   
+        ///             "path": "/description",   
+        ///             "value": "new description"   
+        ///         }   
+        ///     ]  
         /// </remarks>
         [HttpPatch("{courseId}")]
         public ActionResult PartiallyUpdateCurseForAuthor(Guid authorId, Guid courseId, JsonPatchDocument<CourseForUpdateDto> pathcDocument)
