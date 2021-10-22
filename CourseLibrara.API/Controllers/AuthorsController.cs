@@ -176,6 +176,7 @@ namespace CourseLibrara.API.Controllers
         /// <param name="author"></param>
         /// <returns></returns>
         [HttpPost(Name = "CreateAuthorWithDateOfDeath")]
+        [Produces("application/vnd.marvin.authorforcreationwithdateofdeath+json")]
         [RequestHeaderMatchesMediaType("Content-Type", "application/vnd.marvin.authorforcreationwithdateofdeath+json")]
         [Consumes("application/vnd.marvin.authorforcreationwithdateofdeath+json")]
         public ActionResult<AuthorDto> CreateAuthorWithDateOfDeath(AuthorForCreationWithDateOfDeathDto author)
@@ -197,11 +198,13 @@ namespace CourseLibrara.API.Controllers
         }
 
         [HttpPost(Name = "CreateAuthor")]
+        [Produces("application/vnd.marvin.authorforcreation+json")]
         [RequestHeaderMatchesMediaType("Content-Type", 
             "application/json",
             "application/vnd.marvin.authorforcreation+json")]
         [Consumes("application/json",
             "application/vnd.marvin.authorforcreation+json")]
+        //[ApiExplorerSettings(IgnoreApi = true)]
         public ActionResult<AuthorDto> CreateAuthor(AuthorForCreationDto author)
         {
             var authorEntity = mapper.Map<Entities.Author>(author);

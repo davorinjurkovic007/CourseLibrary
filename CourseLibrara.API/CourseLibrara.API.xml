@@ -93,6 +93,13 @@
             Course for Update 
             </summary>
         </member>
+        <member name="M:CourseLibrara.API.OperatinFilters.CreateAuthorOperationFilter.Apply(Microsoft.OpenApi.Models.OpenApiOperation,Swashbuckle.AspNetCore.SwaggerGen.OperationFilterContext)">
+            <summary>
+            
+            </summary>
+            <param name="operation">Generated operation that will result in part of our specification</param>
+            <param name="context">Contains information we can potentially use to manipulate our operation, like tha API description</param>
+        </member>
         <member name="T:CourseLibrara.API.ValidationAttributes.CourseTitleMustBeDifferentFromDescriptionAttribute">
             <summary>
             NOTE: The problem is this request: POST Author with Courses

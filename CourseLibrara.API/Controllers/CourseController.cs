@@ -16,6 +16,13 @@ using System.Threading.Tasks;
 
 namespace CourseLibrara.API.Controllers
 {
+    // This attribute allows us to restrict a response format, signified by media types for a specific action, controller, or at global level.
+    // Swashbuckle looks for this attribute and adjusts the generated spec accordingly.
+    // Controller scope overrides global scope, and action scope overrides controller scope. So you can be very specific if needed.
+    // This attribute to override any API conventions that might have been applied, another reason not to use them
+    // Very important to know is that the Produces filter forces actions decorated with it, or in our case all action in oru controller, to return 
+    // respones in one of the media types passed through and that can have some unexpected side effects.
+    [Produces("application/json", "application/xml")]
     [ApiController]
     [Route("api/authors/{authorId}/courses")]
     //[ResponseCache(CacheProfileName = "240SecondsCacheProfile")]
@@ -79,6 +86,9 @@ namespace CourseLibrara.API.Controllers
         }
 
         [HttpPost(Name = "CreateCoursesForAuthor")]
+        // Just as we can specify the media types for output wiht the Produces attribute, we can specify media types for input with 
+        // the Consumes attribute.
+        [Consumes("application/json")]
         public ActionResult<CourseDto> CreateCoursesForAuthor(Guid authorId, CourseForCreationDto course)
         {
             if(!courseLibraryRepository.AuthorExists(authorId))

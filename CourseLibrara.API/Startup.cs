@@ -1,4 +1,5 @@
 using CourseLibrara.API.DbContexts;
+using CourseLibrara.API.OperatinFilters;
 using CourseLibrara.API.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -16,6 +17,10 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
+// By adding ApiConvention type passing through the type at assembly level, 
+// we ensure there are applied across all controllers
+// Youd don't have to add this in the Startup class, by the way. Any file will do. 
+//[assembly: ApiConventionType(typeof(DefaultApiConventions))]
 namespace CourseLibrara.API
 {
     public class Startup
@@ -45,16 +50,16 @@ namespace CourseLibrara.API
 
             services.AddControllers(setupAction =>
             {
-                // Filters in this collection are applied to all controllers in our code base.
-                setupAction.Filters.Add(
-                    new ProducesResponseTypeAttribute(StatusCodes.Status400BadRequest));
+                //Filters in this collection are applied to all controllers in our code base.
+               setupAction.Filters.Add(
+                   new ProducesResponseTypeAttribute(StatusCodes.Status400BadRequest));
                 setupAction.Filters.Add(
                     new ProducesResponseTypeAttribute(StatusCodes.Status406NotAcceptable));
                 setupAction.Filters.Add(
                     new ProducesResponseTypeAttribute(StatusCodes.Status500InternalServerError));
 
                 // If this set to false, the API will return response in default supported format, if an unsupportive media
-                // type is requested.
+                // type is requested. 406 Not Acceptable response
                 // By default, it is false. 
                 setupAction.ReturnHttpNotAcceptable = true;
                 // By calling Add on it, we can add a new one.
@@ -183,7 +188,15 @@ namespace CourseLibrara.API
                 // But Swagger did not want to start, so I put line below, that Swager show something.
                 // It will not show CreateAuthor, becouse it is second, behing the CreateAuthorWithDateOfDeath but 
                 // everything will be still working 
-                setupAction.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
+                setupAction.ResolveConflictingActions(apiDescriptions =>
+                {
+                    return apiDescriptions.First();
+                });
+
+                // Not working on version 6.1.4
+                //  Best is to not use if not necessary
+                // Don't use if it apsolutly neccesary
+                // setupAction.OperationFilter<CreateAuthorOperationFilter>();
 
                 var xmlCommentsFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlCommentsFullPath = Path.Combine(AppContext.BaseDirectory, xmlCommentsFile);
