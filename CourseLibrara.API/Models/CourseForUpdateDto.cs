@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace CourseLibrara.API.Models
 {
+    /// <summary>
+    /// Course for Update 
+    /// </summary>
     public class CourseForUpdateDto : CourseForMonipulationDto
     {
         [Required(ErrorMessage = "You shold fill out a description.")]
